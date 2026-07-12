@@ -3,220 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4herus | Profil</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Modern Profile | North Tuna</title>
+    <!-- Tailwind CSS (Tasarım için) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Tüm Sayfa ve Arka Plan Videosu Ayarları */
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #000;
+        /* Dönen disk animasyonu */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 6s linear infinite;
+        }
+        /* Gizli tarayıcı elementleri ve genel sıfırlama */
+        .select-none {
             user-select: none;
+            -webkit-user-select: none;
         }
-
-        /* Arka plandaki video kutusu */
-        .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
-        }
-
-        /* Videonun üzerindeki karartma perdesi */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            z-index: -1;
-        }
-
-        /* Profil Kartı İçeriği */
-        .profile-container {
-            text-align: center;
-            z-index: 1;
-            animation: fadeIn 1.5s ease-in-out;
-            padding: 20px;
-        }
-
-        /* Profil Resmi (Avatar) */
-        .avatar {
-            width: 110px;
-            height: 110px;
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 35px rgba(255, 255, 255, 0.4);
-        }
-
-        /* Kullanıcı Adı */
-        .username {
-            font-size: 32px;
-            font-weight: 700;
-            color: #ffffff;
-            margin: 15px 0 5px 0;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        /* Açıklama Satırı */
-        .bio {
-            font-size: 15px;
-            color: #cccccc;
-            margin-bottom: 30px;
-            font-style: italic;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-
-        /* Sosyal Medya İkon Alanı */
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-        }
-
-        /* İkonların Genel Stili */
-        .icon-link {
-            color: #ffffff;
-            font-size: 26px;
-            text-decoration: none;
-            opacity: 0.75;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
-        }
-
-        .icon-link:hover {
-            opacity: 1;
-            transform: translateY(-4px);
-        }
-
-        /* İkonların üzerine gelince parlayacağı renkler */
-        .discord:hover { color: #5865F2; text-shadow: 0 0 15px #5865F2; }
-        .instagram:hover { color: #E1306C; text-shadow: 0 0 15px #E1306C; }
-        .steam:hover { color: #00adee; text-shadow: 0 0 15px #00adee; }
-
-        /* Sol Alt Köşedeki Müzik Butonu */
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 15px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            background: white;
             cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
-
-        .music-player:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        .music-btn {
-            color: #fff;
-            font-size: 16px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .music-text {
-            color: #fff;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        /* Giriş Animasyonu */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body>
+<body class="bg-neutral-950 text-white font-sans select-none overflow-hidden min-h-screen flex flex-col items-center justify-center relative">
 
-    <video class="video-background" autoplay muted loop playsinline>
-        <source src="/guren-lagann-edit.mp4" type="video/mp4">
+    <!-- ARKA PLAN VİDEOSU -->
+    <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 brightness-[0.4] pointer-events-none">
+        <source src="guren-lagann-edit.mp4" type="video/mp4">
     </video>
 
-    <audio id="bg-music" loop>
-       <source src="/guren-lagann-edit.mp4" type="video/mp4">
+    <!-- SES ELEMENTİ (Düzeltildi: music.mp3) -->
+    <audio id="bg-audio" loop>
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="overlay"></div>
+    <!-- MERKEZDEKİ BİLGİLER -->
+    <div class="relative z-10 flex flex-col items-center text-center px-4 max-w-xl">
+        <!-- PROFİL RESMİ -->
+        <div class="w-28 h-28 rounded-full overflow-hidden border-2 border-white/20 shadow-[0_0_25px_rgba(255,255,255,0.1)] mb-4 bg-neutral-800 transition-transform duration-500 hover:scale-105">
+            <img src="avatar.jpg" alt="" class="w-full h-full object-cover">
+        </div>
 
-    <div class="music-player" onclick="toggleMusic()">
-        <button class="music-btn" id="play-icon">
-            <i class="fas fa-play"></i>
-        </button>
-        <span class="music-text" id="music-status">PLAY</span>
-    </div>
+        <!-- İSİM -->
+        <h1 class="text-4xl font-extrabold tracking-wider mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            North Tuna
+        </h1>
 
-    <div class="profile-container">
-        
-        <img <source src="/music.mp3" type="audio/mpeg">
+        <!-- SÖZ -->
+        <p class="text-gray-300 text-sm md:text-base tracking-wide italic mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            ✦ "one above all" ✦
+        </p>
 
-        <div class="username">4herus</div>
-
-        <div class="bio">✦ "buraya kendi açıklamanı yazabilirsin" ✦</div>
-
-        <div class="social-icons">
-            <a href="https://discord.com" target="_blank" class="icon-link discord" title="Discord">
-                <i class="fab fa-discord"></i>
-            </a>
-
-            <a href="https://instagram.com" target="_blank" class="icon-link instagram" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-
-            <a href="https://steamcommunity.com" target="_blank" class="icon-link steam" title="Steam">
-                <i class="fab fa-steam"></i>
-            </a>
+        <!-- SOSYAL MEDYA İKONLARI BARINDIRICI -->
+        <div class="flex items-center gap-4 scale-110 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+            <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center bg-black/20 hover:bg-white/10 cursor-pointer transition-colors">
+                ✦
+            </div>
         </div>
     </div>
 
+    <!-- SOL ALTTAKİ MODERN MÜZİK PLAYER -->
+    <div class="absolute bottom-6 left-6 z-20 flex flex-col items-center gap-3 bg-black/40 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-xl">
+        
+        <!-- Dönen Disk / Buton -->
+        <div id="disk-btn" class="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 shadow-lg cursor-pointer flex items-center justify-center group">
+            <img src="avatar.jpg" alt="" class="absolute w-full h-full object-cover brightness-[0.5] group-hover:brightness-[0.3] transition-all">
+            
+            <!-- Play/Pause İkonları -->
+            <div id="status-icon" class="relative z-10 text-white drop-shadow-md">
+                <svg id="play-svg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-0.5"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                <svg id="pause-svg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></svg>
+            </div>
+            <div class="absolute w-3 h-3 bg-neutral-900 rounded-full border border-white/20"></div>
+        </div>
+
+        <span id="player-text" class="text-[10px] tracking-widest text-gray-400 font-bold uppercase">▸ PLAY</span>
+
+        <!-- Ses Kontrolü -->
+        <div class="flex items-center gap-2 px-1">
+            <button id="mute-btn" class="text-gray-400 hover:text-white transition-colors">
+                <svg id="vol-on" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <svg id="vol-mute" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>
+            </button>
+            <input
+                id="volume-slider"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.5"
+                class="w-16 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-white"
+            />
+        </div>
+    </div>
+
+    <!-- PLAYER LOGIC -->
     <script>
-        const music = document.getElementById('bg-music');
-        const playIcon = document.getElementById('play-icon');
-        const musicStatus = document.getElementById('music-status');
+        const audio = document.getElementById('bg-audio');
+        const diskBtn = document.getElementById('disk-btn');
+        const playSvg = document.getElementById('play-svg');
+        const pauseSvg = document.getElementById('pause-svg');
+        const playerText = document.getElementById('player-text');
+        const muteBtn = document.getElementById('mute-btn');
+        const volOn = document.getElementById('vol-on');
+        const volMute = document.getElementById('vol-mute');
+        const volumeSlider = document.getElementById('volume-slider');
 
-        function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                playIcon.innerHTML = '<i class="fas fa-pause"></i>';
-                musicStatus.innerText = 'PAUSE';
+        let isPlaying = false;
+        let preMuteVolume = 0.5;
+
+        audio.volume = volumeSlider.value;
+
+        diskBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                diskBtn.classList.remove('animate-spin-slow');
+                playSvg.classList.remove('hidden');
+                pauseSvg.classList.add('hidden');
+                playerText.innerText = '▸ PLAY';
             } else {
-                music.pause();
-                playIcon.innerHTML = '<i class="fas fa-play"></i>';
-                musicStatus.innerText = 'PLAY';
+                audio.play().catch(err => console.log("Müzik çalınamadı:", err));
+                diskBtn.classList.add('animate-spin-slow');
+                playSvg.classList.add('hidden');
+                pauseSvg.classList.remove('hidden');
+                playerText.innerText = '|| PAUSE';
             }
-        }
-    </script>
+            isPlaying = !isPlaying;
+        });
 
+        volumeSlider.addEventListener('input', (e) => {
+            const currentVol = parseFloat(e.target.value);
+            audio.volume = currentVol;
+            
+            if (currentVol === 0) {
+                audio.muted = true;
+                volOn.classList.add('hidden');
+                volMute.classList.remove('hidden');
+            } else {
+                audio.muted = false;
+                volOn.classList.remove('hidden');
+                volMute.classList.add('hidden');
+            }
+        });
+
+        muteBtn.addEventListener('click', () => {
+            if (audio.muted || audio.volume === 0) {
+                audio.muted = false;
+                if(audio.volume === 0) audio.volume = preMuteVolume;
+                volumeSlider.value = audio.volume;
+                volOn.classList.remove('hidden');
+                volMute.classList.add('hidden');
+            } else {
+                preMuteVolume = audio.volume;
+                audio.muted = true;
+                volumeSlider.value = 0;
+                volOn.classList.add('hidden');
+                volMute.classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

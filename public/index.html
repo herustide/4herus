@@ -161,14 +161,14 @@
 </head>
 <body>
 
-    <!-- Arka Planda Dönecek Video (public klasöründen okuyor) -->
+    <!-- Arka Planda Dönecek Video (Aynı klasörden okuyor, çift 'n' ile) -->
     <video class="video-background" autoplay muted loop playsinline>
-        <source src="public/guren-lagann-edit.mp4" type="video/mp4">
+        <source src="guren-lagann-edit.mp4" type="video/mp4">
     </video>
 
-    <!-- Arka Plan Müzik Dosyası (public klasöründen okuyor, loop yani bittikçe tekrar eder) -->
+    <!-- Arka Plan Müzik Dosyası (Aynı klasörden okuyor) -->
     <audio id="bg-music" loop>
-        <source src="public/music.mp3" type="audio/mpeg">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Videonun üzerindeki karartma perdesi -->
@@ -185,8 +185,8 @@
     <!-- Profil Kartı -->
     <div class="profile-container">
         
-        <!-- Profil Resmi (public klasöründen avatar.jpg okuyor) -->
-        <img src="public/avatar.jpg" alt="Avatar" class="avatar">
+        <!-- Profil Resmi (Aynı klasörden avatar.jpg okuyor) -->
+        <img src="avatar.jpg" alt="Avatar" class="avatar">
 
         <!-- İsmin -->
         <div class="username">4herus</div>
@@ -210,7 +210,7 @@
         </div>
     </div>
 
-    <!-- Müziği Oynatıp Durduracak Küçük JavaScript Kodu -->
+    <!-- Müziği Oynatıp Durduracak JavaScript -->
     <script>
         const music = document.getElementById('bg-music');
         const playIcon = document.getElementById('play-icon');

@@ -1,123 +1,163 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profilim</title>
-    <!-- İkonlar için FontAwesome kütüphanesini ekliyoruz -->
+    <title>4herus | Profil</title>
+    <!-- İkonlar için FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Sayfa Düzeni ve Arka Plan */
-        body {
+        /* Tüm Sayfa ve Arka Plan Videosu Ayarları */
+        body, html {
             margin: 0;
             padding: 0;
-            background-color: #0a0a0a;
-            color: #ffffff;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            background-color: #000;
         }
 
-        /* Profil Kartı Konumu */
+        /* Arka plandaki video kutusu */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2; /* En arkada kalması için */
+        }
+
+        /* Videonun üzerine karanlık katman (Yazıların okunması için) */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65); /* Karartma derecesi (0.65) */
+            z-index: -1;
+        }
+
+        /* Profil Kartı İçeriği */
         .profile-container {
             text-align: center;
+            z-index: 1;
             animation: fadeIn 1.5s ease-in-out;
+            padding: 20px;
         }
 
-        /* Profil Resmi Ayarları */
+        /* Profil Resmi (Avatar) */
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
 
         .avatar:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 35px rgba(255, 255, 255, 0.4);
         }
 
-        /* İsim Ayarları */
+        /* Kullanıcı Adı */
         .username {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
+            color: #ffffff;
             margin: 15px 0 5px 0;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* Açıklama Ayarları */
+        /* Açıklama Satırı */
         .bio {
-            font-size: 14px;
-            color: #aaaaaa;
-            margin-bottom: 25px;
+            font-size: 15px;
+            color: #cccccc;
+            margin-bottom: 30px;
             font-style: italic;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* İkonların Kutusu */
+        /* Sosyal Medya İkon Alanı */
         .social-icons {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
         }
 
-        /* İkonların Genel Tasarımı */
+        /* İkonların Genel Stili */
         .icon-link {
             color: #ffffff;
-            font-size: 24px;
+            font-size: 26px;
             text-decoration: none;
-            opacity: 0.7;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0.75;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
         }
 
-        /* Üzerine gelince parlaması ve büyümesi */
+        /* Üzerine gelince büyüme ve renk geçişleri */
         .icon-link:hover {
             opacity: 1;
-            transform: translateY(-3px);
+            transform: translateY(-4px);
         }
 
-        /* Özel İkon Renkleri (Üzerine gelince kendi rengi olsun istersen) */
-        .discord:hover { color: #5865F2; }
-        .instagram:hover { color: #E1306C; }
-        .steam:hover { color: #171a21; }
+        /* İkonların üzerine gelince parlayacağı renkler */
+        .discord:hover { color: #5865F2; text-shadow: 0 0 15px #5865F2; }
+        .instagram:hover { color: #E1306C; text-shadow: 0 0 15px #E1306C; }
+        .steam:hover { color: #00adee; text-shadow: 0 0 15px #00adee; }
 
-        /* Sayfa açılış efekti */
+        /* Giriş Animasyonu */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
+    <!-- Arka Planda Dönecek Video -->
+    <!-- otomatik oynat (autoplay), sessiz (muted) ve sürekli tekrar et (loop) ayarlı -->
+    <video class="video-background" autoplay muted loop playsinline>
+        <source src="guren-lagann-edit.mp4" type="video/mp4">
+    </video>
+
+    <!-- Videonun üzerindeki karartma perdesi -->
+    <div class="overlay"></div>
+
+    <!-- Profil Kartı -->
     <div class="profile-container">
-        <!-- Profil Resmi (Geçici bir resim koydum, değiştirebilirsin) -->
-        <img src="https://picsum.photos/200" alt="Avatar" class="avatar">
+        
+        <!-- Profil Resmi (Şimdilik geçici bir anime resmi koydum, bunu da değiştirebiliriz) -->
+        <img src="https://wallpapers.com/images/hd/anime-profile-picture-s97z6714g99497as.jpg" alt="Avatar" class="avatar">
 
-        <!-- İsim (Buraları düzenleyebilirsin) -->
-        <div class="username">Adın Veya Nicknam'in</div>
+        <!-- Düzenleyeceğin İsim Kısmı -->
+        <div class="username">4herus</div>
 
-        <!-- Açıklama -->
+        <!-- Düzenleyeceğin Açıklama Kısmı -->
         <div class="bio">✦ "buraya kendi açıklamanı yazabilirsin" ✦</div>
 
-        <!-- Sosyal Medya İkonları -->
+        <!-- Sosyal Medya Linklerin -->
         <div class="social-icons">
-            <!-- Discord (href kısmına kendi davet/profil linkini koyabilirsin) -->
+            <!-- Discord (href="link" kısmını değiştir) -->
             <a href="https://discord.com" target="_blank" class="icon-link discord" title="Discord">
                 <i class="fab fa-discord"></i>
             </a>
 
-            <!-- Instagram (href kısmına kendi linkini koy) -->
+            <!-- Instagram (href="link" kısmını değiştir) -->
             <a href="https://instagram.com" target="_blank" class="icon-link instagram" title="Instagram">
                 <i class="fab fa-instagram"></i>
             </a>
 
-            <!-- Steam (href kısmına kendi profil linkini koy) -->
+            <!-- Steam (href="link" kısmını değiştir) -->
             <a href="https://steamcommunity.com" target="_blank" class="icon-link steam" title="Steam">
                 <i class="fab fa-steam"></i>
             </a>

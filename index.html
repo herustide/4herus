@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim</title>
+    <!-- İkonlar için FontAwesome kütüphanesini ekliyoruz -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Sayfa Düzeni ve Arka Plan */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
+        /* Profil Kartı Konumu */
+        .profile-container {
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Profil Resmi Ayarları */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+        }
+
+        /* İsim Ayarları */
+        .username {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 15px 0 5px 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* Açıklama Ayarları */
+        .bio {
+            font-size: 14px;
+            color: #aaaaaa;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        /* İkonların Kutusu */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* İkonların Genel Tasarımı */
+        .icon-link {
+            color: #ffffff;
+            font-size: 24px;
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Üzerine gelince parlaması ve büyümesi */
+        .icon-link:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+
+        /* Özel İkon Renkleri (Üzerine gelince kendi rengi olsun istersen) */
+        .discord:hover { color: #5865F2; }
+        .instagram:hover { color: #E1306C; }
+        .steam:hover { color: #171a21; }
+
+        /* Sayfa açılış efekti */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+        <!-- Profil Resmi (Geçici bir resim koydum, değiştirebilirsin) -->
+        <img src="https://picsum.photos/200" alt="Avatar" class="avatar">
+
+        <!-- İsim (Buraları düzenleyebilirsin) -->
+        <div class="username">Adın Veya Nicknam'in</div>
+
+        <!-- Açıklama -->
+        <div class="bio">✦ "buraya kendi açıklamanı yazabilirsin" ✦</div>
+
+        <!-- Sosyal Medya İkonları -->
+        <div class="social-icons">
+            <!-- Discord (href kısmına kendi davet/profil linkini koyabilirsin) -->
+            <a href="https://discord.com" target="_blank" class="icon-link discord" title="Discord">
+                <i class="fab fa-discord"></i>
+            </a>
+
+            <!-- Instagram (href kısmına kendi linkini koy) -->
+            <a href="https://instagram.com" target="_blank" class="icon-link instagram" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+
+            <!-- Steam (href kısmına kendi profil linkini koy) -->
+            <a href="https://steamcommunity.com" target="_blank" class="icon-link steam" title="Steam">
+                <i class="fab fa-steam"></i>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

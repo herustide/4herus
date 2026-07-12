@@ -33,10 +33,10 @@
 </head>
 <body class="bg-neutral-950 text-white font-sans select-none overflow-hidden min-h-screen flex flex-col items-center justify-center relative">
 
-<!-- ARKA PLAN VİDEOSU -->
-<video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 brightness-[0.4] pointer-events-none">
-    <source src="https://files.catbox.moe/lvnoe4.mp4" type="video/mp4">
-</video>
+    <!-- ARKA PLAN VİDEOSU -->
+    <video id="bg-video" autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 brightness-[0.4] pointer-events-none">
+        <source src="https://files.catbox.moe/lvnoe4.mp4" type="video/mp4">
+    </video>
 
     <!-- SES ELEMENTİ (Yolu public/ olarak güncellendi) -->
     <audio id="bg-audio" loop>
@@ -106,6 +106,7 @@
     <!-- PLAYER LOGIC -->
     <script>
         const audio = document.getElementById('bg-audio');
+        const video = document.getElementById('bg-video'); // Video elementi seçildi
         const diskBtn = document.getElementById('disk-btn');
         const playSvg = document.getElementById('play-svg');
         const pauseSvg = document.getElementById('pause-svg');
@@ -119,6 +120,14 @@
         let preMuteVolume = 0.5;
 
         audio.volume = volumeSlider.value;
+
+        // VİDEO HER YENİDEN BAŞLADIĞINDA MÜZİĞİ DE SIFIRLA
+        video.addEventListener('seeked', () => {
+            audio.currentTime = 0;
+            if (isPlaying) {
+                audio.play().catch(err => console.log("Müzik senkronize edilemedi:", err));
+            }
+        });
 
         diskBtn.addEventListener('click', () => {
             if (isPlaying) {

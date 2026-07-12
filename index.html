@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -19,6 +19,7 @@
             justify-content: center;
             align-items: center;
             background-color: #000;
+            user-select: none;
         }
 
         /* Arka plandaki video kutusu */
@@ -29,17 +30,17 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -2; /* En arkada kalması için */
+            z-index: -2;
         }
 
-        /* Videonun üzerine karanlık katman (Yazıların okunması için) */
+        /* Videonun üzerindeki karartma perdesi */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.65); /* Karartma derecesi (0.65) */
+            background: rgba(0, 0, 0, 0.65);
             z-index: -1;
         }
 
@@ -60,7 +61,6 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
         }
 
         .avatar:hover {
@@ -104,7 +104,6 @@
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
         }
 
-        /* Üzerine gelince büyüme ve renk geçişleri */
         .icon-link:hover {
             opacity: 1;
             transform: translateY(-4px);
@@ -115,6 +114,44 @@
         .instagram:hover { color: #E1306C; text-shadow: 0 0 15px #E1306C; }
         .steam:hover { color: #00adee; text-shadow: 0 0 15px #00adee; }
 
+        /* Sol Alt Köşedeki Müzik Butonu */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .music-player:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .music-btn {
+            color: #fff;
+            font-size: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .music-text {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
         /* Giriş Animasyonu */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
@@ -124,45 +161,73 @@
 </head>
 <body>
 
-    <!-- Arka Planda Dönecek Video -->
-    <!-- otomatik oynat (autoplay), sessiz (muted) ve sürekli tekrar et (loop) ayarlı -->
+    <!-- Arka Planda Dönecek Video (public klasöründen okuyor) -->
     <video class="video-background" autoplay muted loop playsinline>
-        <source src="guren-lagann-edit.mp4" type="video/mp4">
+        <source src="public/guren-lagann-edit.mp4" type="video/mp4">
     </video>
+
+    <!-- Arka Plan Müzik Dosyası (public klasöründen okuyor, loop yani bittikçe tekrar eder) -->
+    <audio id="bg-music" loop>
+        <source src="public/music.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Videonun üzerindeki karartma perdesi -->
     <div class="overlay"></div>
 
+    <!-- Sol Alttaki Müzik Kontrol Butonu -->
+    <div class="music-player" onclick="toggleMusic()">
+        <button class="music-btn" id="play-icon">
+            <i class="fas fa-play"></i>
+        </button>
+        <span class="music-text" id="music-status">PLAY</span>
+    </div>
+
     <!-- Profil Kartı -->
     <div class="profile-container">
         
-        <!-- Profil Resmi (Şimdilik geçici bir anime resmi koydum, bunu da değiştirebiliriz) -->
-        <img src="https://wallpapers.com/images/hd/anime-profile-picture-s97z6714g99497as.jpg" alt="Avatar" class="avatar">
+        <!-- Profil Resmi (public klasöründen avatar.jpg okuyor) -->
+        <img src="public/avatar.jpg" alt="Avatar" class="avatar">
 
-        <!-- Düzenleyeceğin İsim Kısmı -->
+        <!-- İsmin -->
         <div class="username">4herus</div>
 
-        <!-- Düzenleyeceğin Açıklama Kısmı -->
+        <!-- Açıklaman -->
         <div class="bio">✦ "buraya kendi açıklamanı yazabilirsin" ✦</div>
 
         <!-- Sosyal Medya Linklerin -->
         <div class="social-icons">
-            <!-- Discord (href="link" kısmını değiştir) -->
             <a href="https://discord.com" target="_blank" class="icon-link discord" title="Discord">
                 <i class="fab fa-discord"></i>
             </a>
 
-            <!-- Instagram (href="link" kısmını değiştir) -->
             <a href="https://instagram.com" target="_blank" class="icon-link instagram" title="Instagram">
                 <i class="fab fa-instagram"></i>
             </a>
 
-            <!-- Steam (href="link" kısmını değiştir) -->
             <a href="https://steamcommunity.com" target="_blank" class="icon-link steam" title="Steam">
                 <i class="fab fa-steam"></i>
             </a>
         </div>
     </div>
+
+    <!-- Müziği Oynatıp Durduracak Küçük JavaScript Kodu -->
+    <script>
+        const music = document.getElementById('bg-music');
+        const playIcon = document.getElementById('play-icon');
+        const musicStatus = document.getElementById('music-status');
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                playIcon.innerHTML = '<i class="fas fa-pause"></i>';
+                musicStatus.innerText = 'PAUSE';
+            } else {
+                music.pause();
+                playIcon.innerHTML = '<i class="fas fa-play"></i>';
+                musicStatus.innerText = 'PLAY';
+            }
+        }
+    </script>
 
 </body>
 </html>

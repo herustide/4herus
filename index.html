@@ -29,6 +29,20 @@
             background: white;
             cursor: pointer;
         }
+        /* Fare İzi İçin CSS Tasarımı */
+        .cursor-trail {
+            position: fixed;
+            width: 12px;
+            height: 19px;
+            /* Standart Windows imleci şeklinde bir SVG arka planı */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='19' viewBox='0 0 12 19' fill='none'%3E%3Cpath d='M0 0V18.5L4.5 14L7.5 19L9.5 17.5L6.5 12.5H11.5L0 0Z' fill='white' stroke='black' stroke-width='1'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(0, 0);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
     </style>
 </head>
 <body class="bg-neutral-950 text-white font-sans select-none overflow-hidden min-h-screen flex flex-col items-center justify-center relative">
@@ -38,14 +52,14 @@
         <source src="https://files.catbox.moe/lvnoe4.mp4" type="video/mp4">
     </video>
 
-    <!-- SES ELEMENTİ (Yolu public/ olarak güncellendi) -->
+    <!-- SES ELEMENTİ -->
     <audio id="bg-audio" loop>
         <source src="public/music.mp3" type="audio/mpeg">
     </audio>
 
     <!-- MERKEZDEKİ BİLGİLER -->
     <div class="relative z-10 flex flex-col items-center text-center px-4 max-w-xl">
-        <!-- PROFİL RESMİ (Yolu public/ olarak güncellendi) -->
+        <!-- PROFİL RESMİ -->
         <div class="w-28 h-28 rounded-full overflow-hidden border-2 border-white/20 shadow-[0_0_25px_rgba(255,255,255,0.1)] mb-4 bg-neutral-800 transition-transform duration-500 hover:scale-105">
             <img src="public/avatar.jpg" alt="" class="w-full h-full object-cover">
         </div>
@@ -71,7 +85,7 @@
     <!-- SOL ALTTAKİ MODERN MÜZİK PLAYER -->
     <div class="absolute bottom-6 left-6 z-20 flex flex-col items-center gap-3 bg-black/40 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-xl">
         
-        <!-- Dönen Disk / Buton (Disk resmi yolu public/ olarak güncellendi) -->
+        <!-- Dönen Disk / Buton -->
         <div id="disk-btn" class="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 shadow-lg cursor-pointer flex items-center justify-center group">
             <img src="public/avatar.jpg" alt="" class="absolute w-full h-full object-cover brightness-[0.5] group-hover:brightness-[0.3] transition-all">
             
@@ -103,10 +117,10 @@
         </div>
     </div>
 
-    <!-- PLAYER LOGIC -->
+    <!-- PLAYER LOGIC + CURSOR TRAIL LOGIC -->
     <script>
         const audio = document.getElementById('bg-audio');
-        const video = document.getElementById('bg-video'); // Video elementi seçildi
+        const video = document.getElementById('bg-video');
         const diskBtn = document.getElementById('disk-btn');
         const playSvg = document.getElementById('play-svg');
         const pauseSvg = document.getElementById('pause-svg');
@@ -121,7 +135,7 @@
 
         audio.volume = volumeSlider.value;
 
-        // VİDEO HER YENİDEN BAŞLADIĞINDA MÜZİĞİ DE SIFIRLA
+        // VİDEO DÖNGÜYE GİRDİĞİNDE MÜZİĞİ SIFIRLAMA
         video.addEventListener('seeked', () => {
             audio.currentTime = 0;
             if (isPlaying) {
@@ -129,6 +143,7 @@
             }
         });
 
+        // MÜZİK OYNATMA / DURDURMA KONTROLLERİ
         diskBtn.addEventListener('click', () => {
             if (isPlaying) {
                 audio.pause();
@@ -149,7 +164,6 @@
         volumeSlider.addEventListener('input', (e) => {
             const currentVol = parseFloat(e.target.value);
             audio.volume = currentVol;
-            
             if (currentVol === 0) {
                 audio.muted = true;
                 volOn.classList.add('hidden');
@@ -174,6 +188,42 @@
                 volumeSlider.value = 0;
                 volOn.classList.add('hidden');
                 volMute.classList.remove('hidden');
+            }
+        });
+
+        // FARE İZİ (CURSOR TRAIL) SİSTEMİ
+        const trails = [];
+        const maxTrails = 12; // Ekranda aynı anda gözükecek maksimum imleç kuyruğu uzunluğu
+
+        window.addEventListener('mousemove', (e) => {
+            // Yeni bir kuyruk elemanı (imleç) oluşturalım
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            
+            // Farenin anlık x ve y koordinatlarına eşitleyelim
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            
+            document.body.appendChild(trail);
+            trails.push(trail);
+
+            // Kuyruk elemanlarını sırayla şeffaflaştırıp küçülterek yok etme animasyonu
+            setTimeout(() => {
+                trail.style.opacity = '0';
+                trail.style.transform = 'scale(0.6)';
+            }, 50);
+
+            // Belirli bir süre sonra elementi DOM'dan tamamen temizle
+            setTimeout(() => {
+                trail.remove();
+                const index = trails.indexOf(trail);
+                if (index > -1) trails.splice(index, 1);
+            }, 300);
+
+            // Eğer kuyruk çok uzarsa en eski olanı hemen sil
+            if (trails.length > maxTrails) {
+                const oldTrail = trails.shift();
+                oldTrail.remove();
             }
         });
     </script>

@@ -75,10 +75,27 @@
         </p>
 
         <!-- SOSYAL MEDYA İKONLARI BARINDIRICI -->
-        <div class="flex items-center gap-4 scale-110 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-            <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center bg-black/20 hover:bg-white/10 cursor-pointer transition-colors">
-                ✦
-            </div>
+        <div class="flex items-center gap-5 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+            
+            <!-- Discord İkonu (Linkleri href="#" kısmına ekleyebilirsin) -->
+            <a href="#" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-black/30 hover:bg-white/10 text-gray-300 hover:text-white cursor-pointer transition-all hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.574-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032a.05.05 0 0 0 .022.035a13.1 13.1 0 0 0 3.967 2.017.05.05 0 0 0 .057-.019c.307-.42.577-.865.808-1.333a.05.05 0 0 0-.027-.065 8.7 8.7 0 0 1-1.24-.592.05.05 0 0 1-.005-.085c.085-.063.17-.129.25-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007c.08.066.165.132.25.196a.05.05 0 0 1-.005.085 8.7 8.7 0 0 1-1.24.592.05.05 0 0 0-.027.065c.232.468.502.913.808 1.333a.05.05 0 0 0 .057.019 13.1 13.1 0 0 0 3.967-2.017.05.05 0 0 0 .022-.035c.321-3.466-.239-6.463-1.748-9.107a.04.04 0 0 0-.02-.019M5.158 9.613c-.774 0-1.414-.71-1.414-1.577s.628-1.577 1.414-1.577c.79 0 1.425.717 1.414 1.577 0 .867-.625 1.577-1.414 1.577m5.684 0c-.774 0-1.414-.71-1.414-1.577s.628-1.577 1.414-1.577c.789 0 1.425.717 1.414 1.577 0 .867-.625 1.577-1.414 1.577"/>
+                </svg>
+            </a>
+
+            <!-- Instagram İkonu -->
+            <a href="#" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-black/30 hover:bg-white/10 text-gray-300 hover:text-white cursor-pointer transition-all hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+
+            <!-- Spotify İkonu -->
+            <a href="#" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-black/30 hover:bg-white/10 text-gray-300 hover:text-white cursor-pointer transition-all hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.669 11.538a.5.5 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.5.5 0 0 1-.213-.977c3.046-.696 5.662-.396 7.762.887a.5.5 0 0 1 .165.695m.966-2.179a.62.62 0 0 1-.859.204c-2.149-1.322-5.427-1.704-7.962-.933a.62.62 0 0 1-.365-1.188c2.898-.88 6.516-.453 8.982 1.066a.62.62 0 0 1 .204.851m.086-2.296C9.9 5.234 5.257 5.08 2.569 5.895a.75.75 0 0 1-.436-1.434c3.084-.935 8.214-.757 11.378 1.122a.75.75 0 0 1-.843 1.238"/>
+                </svg>
+            </a>
+
         </div>
     </div>
 
@@ -193,34 +210,29 @@
 
         // FARE İZİ (CURSOR TRAIL) SİSTEMİ
         const trails = [];
-        const maxTrails = 12; // Ekranda aynı anda gözükecek maksimum imleç kuyruğu uzunluğu
+        const maxTrails = 12;
 
         window.addEventListener('mousemove', (e) => {
-            // Yeni bir kuyruk elemanı (imleç) oluşturalım
             const trail = document.createElement('div');
             trail.className = 'cursor-trail';
             
-            // Farenin anlık x ve y koordinatlarına eşitleyelim
             trail.style.left = e.clientX + 'px';
             trail.style.top = e.clientY + 'px';
             
             document.body.appendChild(trail);
             trails.push(trail);
 
-            // Kuyruk elemanlarını sırayla şeffaflaştırıp küçülterek yok etme animasyonu
             setTimeout(() => {
                 trail.style.opacity = '0';
                 trail.style.transform = 'scale(0.6)';
             }, 50);
 
-            // Belirli bir süre sonra elementi DOM'dan tamamen temizle
             setTimeout(() => {
                 trail.remove();
                 const index = trails.indexOf(trail);
                 if (index > -1) trails.splice(index, 1);
             }, 300);
 
-            // Eğer kuyruk çok uzarsa en eski olanı hemen sil
             if (trails.length > maxTrails) {
                 const oldTrail = trails.shift();
                 oldTrail.remove();
